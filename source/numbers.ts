@@ -5,27 +5,38 @@
 import * as fs from 'fs';
 import * as readline from 'readline';
 
-const input = fs.createReadStream('../unsecretFile.txt');
-const rl = readline.createInterface({
-  input: input,
-  output: process.stdout,
-  terminal: false
-});
+const calculateNumbers = async (filePath: string) => {
+  try {
+    await fs.promises.access(filePath);
+  } catch (err) {
+    console.log('File passed doesnt exists. Placeholder used instead.');
+    filePath = '../assets/clear_smaller.txt';
+  }
 
-const isCharNumber = c => c >= '0' && c <= '9';
-let total = 0;
+  const input = fs.createReadStream(filePath);
+  const rl = readline.createInterface({
+    input: input,
+    output: process.stdout,
+    terminal: false
+  });
 
-rl.on('close', () => {
-  console.log(`Total: ${total}`);
-  process.exit(0)
-});
+  const isCharNumber = (char: string) => char >= '0' && char <= '9';
+  let total = 0;
 
-rl.on('line', (line) => {
-  if (/\d/.test(line) === false) return;
-  total = line.split('')
-    .filter(isCharNumber)
-    .map(ch => parseInt(ch, 10))
-    .reduce((acc, curr) => acc + curr, total);
+  rl.on('close', () => {
+    console.log(`Total: ${total}`);
+    process.exit(0)
+  });
 
-  // console.log('running total: ', total);
-});
+  rl.on('line', (line) => {
+    if (/\d/.test(line) === false) return;
+    total = line.split('')
+      .filter(isCharNumber)
+      .map(ch => parseInt(ch, 10))
+      .reduce((acc, curr) => acc + curr, total);
+
+    // console.log('running total: ', total);
+  });
+}
+
+calculateNumbers('../assets/unsecretFile.txt');

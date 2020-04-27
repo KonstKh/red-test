@@ -14,7 +14,7 @@ https.createServer(options, async (req, res) => {
     return res.end();
   }
   // change fileName in case it needs
-  await parseFile('../assets/unsecretFile1.txt', (fileParseResult) => {
+  await parseFile('../assets/unsecretFile.txt', (fileParseResult) => {
     console.log('fileParseResult: ', fileParseResult);
     const convertedString = convertAsciiToString(fileParseResult);
     res.writeHead(200);

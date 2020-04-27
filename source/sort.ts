@@ -50,10 +50,11 @@ export const parseFile = async (filePath: string, cb?: Function) => {
 
   rl.on('close', () => {
     processResult(result);
-    cb && cb(result);
+    const processedResult = result.map((el, i) => el - i);
+    cb && cb(processedResult);
   });
 
-  const isCharNumber = (c: string) => c >= '0' && c <= '9';
+  const isCharNumber = (char: string) => char >= '0' && char <= '9';
 
   rl.on('line', (line: string) => {
     const sentences = line.split('. ');
