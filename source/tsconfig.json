@@ -6,6 +6,7 @@
     "noUnusedLocals": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
+    "outDir": "../build",
     "lib": ["ES2017", "ES6", "ES2016", "ScriptHost", "DOM"],
     "typeRoots": [
       "../node_modules/@types"

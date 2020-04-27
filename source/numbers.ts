@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as readline from 'readline';
 
 const input = fs.createReadStream('../unsecretFile.txt');
-var rl = readline.createInterface({
+const rl = readline.createInterface({
   input: input,
   output: process.stdout,
   terminal: false
@@ -15,13 +15,17 @@ var rl = readline.createInterface({
 const isCharNumber = c => c >= '0' && c <= '9';
 let total = 0;
 
-rl.on('end', process.exit);
+rl.on('close', () => {
+  console.log(`Total: ${total}`);
+  process.exit(0)
+});
+
 rl.on('line', (line) => {
   if (/\d/.test(line) === false) return;
   total = line.split('')
-              .filter(isCharNumber)
-              .map(ch => parseInt(ch, 10))
-              .reduce((acc, curr) => acc + curr, total);
+    .filter(isCharNumber)
+    .map(ch => parseInt(ch, 10))
+    .reduce((acc, curr) => acc + curr, total);
 
-  console.log('running total: ', total);
+  // console.log('running total: ', total);
 });

@@ -5,14 +5,14 @@ import * as zlib from 'zlib';
 
 const getFile = (file) => fs.readFileSync(path.join(process.cwd(), file));
 
-const key = getFile('../secret.key').toString().substr(0, 32);
-const decipher = crypto.createDecipheriv('aes-256-gcm', key, getFile('../iv.txt'));
-decipher.setAuthTag(getFile('../auth.txt'));
+const key = getFile('../assets/secret.key').toString().substr(0, 32);
+const decipher = crypto.createDecipheriv('aes-256-gcm', key, getFile('../assets/iv.txt'));
+decipher.setAuthTag(getFile('../assets/auth.txt'));
 
-fs.createReadStream(path.join(process.cwd(), "../secret.enc"))
+fs.createReadStream(path.join(process.cwd(), "../assets/secret.enc"))
   .pipe(decipher)
   .pipe(zlib.createGunzip())
-  .pipe(fs.createWriteStream('../unsecretFile.txt'));
+  .pipe(fs.createWriteStream('../assets/unsecretFile.txt'));
 
 const getData = async (path: string): Promise<string> => {
   const rs = fs.createReadStream(path);
@@ -39,7 +39,7 @@ const getSummOfNumbers = async (path: string): Promise<number | null> => {
   return matches && matches.reduce((acc, curr) => (acc + Number.parseInt(curr, 10)), 0);
 }
 
-getSummOfNumbers('../clear_smaller.txt').then(console.log);
+getSummOfNumbers('../assets/clear_smaller.txt').then(console.log);
 
 
 /**
@@ -55,7 +55,7 @@ const countVowels = async (path: string) => {
   });
   return mapCount;
 }
-countVowels('../clear_smaller.txt').then(console.log)
+countVowels('../assets/clear_smaller.txt').then(console.log)
 
 const vowelMap = {
   'a': 2,
@@ -69,7 +69,7 @@ const vowelMap = {
  * Aufgabe 3 #1
  */
 const summOfVowels = async () => {
-  const vowelsMap = await countVowels('../clear_smaller.txt');
+  const vowelsMap = await countVowels('../assets/clear_smaller.txt');
   const result = {}
   vowelsMap.forEach((_val, key, map) => {
       const newVal = map.get(key).val * vowelMap[key]
